@@ -153,8 +153,20 @@ def createEmail(firstName, secondName):
 
 	return email
 
+class user(object):
+	def __init__(self, firstName, secondName):
+		self.firstName = firstName
+		self.secondName = secondName
+
+	def getFirstName(self):
+		return self.firstName
+
 if __name__ == '__main__':
 	if len(sys.argv) > 1:
 		createCSVFiles("a.txt", int(sys.argv[1]))
 	else:
 		createCSVFiles("a.txt")
+
+	anicka = user("Anna", "Urbánková")
+
+	print(anicka.getFirstName())
