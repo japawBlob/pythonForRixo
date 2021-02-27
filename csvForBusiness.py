@@ -1,6 +1,10 @@
+#Solve splitting without empty strings
+
 import unidecode
 import random
 import sys
+import unicodedata
+import PySimpleGUI as sg
 
 vowels = "aeiouy"
 
@@ -47,8 +51,8 @@ class user(object):
 		return email
 
 	def createZeteoName(self):
-		firstName = unidecode.unidecode(self.firstName).lower();
-		secondName = unidecode.unidecode(self.secondName).lower();
+		firstName = unidecode.unidecode(self.firstName).lower()
+		secondName = unidecode.unidecode(self.secondName).lower()
 		zeteoName = firstName+"."+secondName
 		return zeteoName
 
@@ -72,10 +76,11 @@ class fileCreatorHandler(object):
 
 	def readUsersFromFile(self):
 		newUsers = []
-		with open(self.inputFileName, "r") as inputFile:
+		with open(self.inputFileName, "r",  encoding="utf-8") as inputFile:
 			for line in inputFile:
 				line = line.strip('\n')
 				words = line.split(" ")
+				words = list(filter(None, words))
 				if len(words) < 2:
 					continue
 				if len(words) > 2:
@@ -99,7 +104,7 @@ class fileCreatorHandler(object):
 			self.createJaachymFile()
 
 	def createAzureUserAddFile(self):
-		with open("Azure_Bulk_User_Create.csv", "w+") as file:
+		with open("Azure_Bulk_User_Create.csv", "w+", encoding="utf-8") as file:
 			file.write("version:v1.0\n")
 			file.write("Name [displayName] Required,User name [userPrincipalName] Required,Initial password [passwordProfile] Required,Block sign in (Yes/No) [accountEnabled] Required,First name [givenName],Last name [surname]\n")
 			for person in self.newUsers:
@@ -112,14 +117,14 @@ class fileCreatorHandler(object):
 							person.secondName + "\n")
 
 	def createAzureGroupAddFile(self):
-		with open(self.azureGroupAddFileName, "w+") as file:
+		with open(self.azureGroupAddFileName, "w+",  encoding="utf-8") as file:
 			file.write("version:v1.0\n")
 			file.write("Member object ID or user principal name [memberObjectIdOrUpn] Required\n")
 			for person in self.newUsers:
 				file.write(person.email + "\n")
 
 	def createZeteoCredentialsFile(self):
-		with open(self.zeteoFileName, "w+") as file:
+		with open(self.zeteoFileName, "w+",  encoding="utf-8") as file:
 			file.write("version:v1.0\n")
 			file.write("First name [givenName],Last name [surname],Zeteo universal email [zeteoEmailUniversal], Rixo telephone number [phoneNumber], Zeteo personal number [zeteoID], Zeteo role [zeteoRole], Zeteo user name [zeteoName] Required, Zeteo user password [zeteoPass] Required\n")
 			for person in self.newUsers:
@@ -133,7 +138,7 @@ class fileCreatorHandler(object):
 							person.zeteoPass + "\n")
 	
 	def createUstrednaCredentialsFile(self):
-		with open(self.ustrednaFileName, "w+") as file:
+		with open(self.ustrednaFileName, "w+",  encoding="utf-8") as file:
 			file.write("version:v1.0\n")
 			file.write("First name [givenName],Last name [surname],Ustredna login name [ustrednaLogin], Ustredna password [ustrednaPass]\n")
 			for person in self.newUsers:
@@ -143,14 +148,38 @@ class fileCreatorHandler(object):
 							person.ustrednaPass + "\n")
 
 	def createJaachymFile(self):
-		with open(self.jaachymFileName, "w+") as file:
+		with open(self.jaachymFileName, "w+",  encoding="utf-8") as file:
 			file.write("version:v1.0\n")
 			file.write("Member email [userEmail] Required, Zeteo ID [zeteoID] Required\n")
 			for person in self.newUsers:
 				file.write( person.email + "," +
 							str(person.zeteoID) + "\n")
 
+class window (object):
+	def __init__(self):
+		pass
+
+	def initWindow(self):
+		sg.Window(title="Hello World", layout=[[]]).read()
+
 if __name__ == '__main__':
 	users = fileCreatorHandler("a.txt")
 
 	users.createCSVFiles();
+	
+	# Enter the source file
+	#sg.theme('DarkAmber')   # Add a little color to your windows
+	# All the stuff inside your window. This is the PSG magic code compactor...
+	# layout = [  [sg.Text('This is simple python programme used for creating CSV files for azuze and sending emails')],
+	#             [sg.Text('Please enter source file'), sg.InputText()],
+	#             [sg.OK(), sg.Cancel()]]
+
+	# # Create the Window
+	# window = sg.Window('Window Title', layout)
+	# # Event Loop to process "events"
+	# while True:             
+	#     event, values = window.read()
+	#     if event in (sg.WIN_CLOSED, 'Cancel'):
+	#         break
+
+	# window.close()
