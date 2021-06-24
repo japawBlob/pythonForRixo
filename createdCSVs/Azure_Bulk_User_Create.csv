@@ -1,0 +1,7 @@
+version:v1.0
+Name [displayName] Required,User name [userPrincipalName] Required,Initial password [passwordProfile] Required,Block sign in (Yes/No) [accountEnabled] Required,First name [givenName],Last name [surname]
+Tomáš Císař,tomas.cisar@rixo.cz,nosiR620,No,Tomáš,Císař
+Petra Jagošová,petra.jagosova@rixo.cz,rakIde252,No,Petra,Jagošová
+Jana Kluzová,jana.kluzova@rixo.cz,jeqiWi9973,No,Jana,Kluzová
+Květoslava Ševčíková,kvetoslava.sevcikova@rixo.cz,wupyjI0716,No,Květoslava,Ševčíková
+Jakub Žárský,jakub.zarsky@rixo.cz,pelaqU4300,No,Jakub,Žárský
