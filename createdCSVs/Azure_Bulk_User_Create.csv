@@ -1,7 +1,23 @@
 version:v1.0
 Name [displayName] Required,User name [userPrincipalName] Required,Initial password [passwordProfile] Required,Block sign in (Yes/No) [accountEnabled] Required,First name [givenName],Last name [surname]
-Tomáš Císař,tomas.cisar@rixo.cz,nosiR620,No,Tomáš,Císař
-Petra Jagošová,petra.jagosova@rixo.cz,rakIde252,No,Petra,Jagošová
-Jana Kluzová,jana.kluzova@rixo.cz,jeqiWi9973,No,Jana,Kluzová
-Květoslava Ševčíková,kvetoslava.sevcikova@rixo.cz,wupyjI0716,No,Květoslava,Ševčíková
-Jakub Žárský,jakub.zarsky@rixo.cz,pelaqU4300,No,Jakub,Žárský
+Hands Pepe,hands.pepe@rixo.cz,zuCebe6272,No,Hands,Pepe
+Černý Josef,cerny.josef@rixo.cz,givaW125,No,Černý,Josef
+Říha Gustav,riha.gustav@rixo.cz,navinO4593,No,Říha,Gustav
+Roubíček Tomáš,roubicek.tomas@rixo.cz,cUsys117,No,Roubíček,Tomáš
+Koťě Jiří,kote.jiri@rixo.cz,baRude053,No,Koťě,Jiří
+Rotný Matyáš,rotny.matyas@rixo.cz,wiwuJi0343,No,Rotný,Matyáš
+Dědková Barbora,dedkova.barbora@rixo.cz,suNic792,No,Dědková,Barbora
+Milá Anna,mila.anna@rixo.cz,Viqili7448,No,Milá,Anna
+Hravý Petr,hravy.petr@rixo.cz,dAloc377,No,Hravý,Petr
+Usměvavá Irena,usmevava.irena@rixo.cz,mucIbo840,No,Usměvavá,Irena
+Pečlivá Kateřina,pecliva.katerina@rixo.cz,niGym222,No,Pečlivá,Kateřina
+Strouhal Michal,strouhal.michal@rixo.cz,voBow887,No,Strouhal,Michal
+Kreslíř Jan,kreslir.jan@rixo.cz,xUfobe710,No,Kreslíř,Jan
+Fitko Lukáš,fitko.lukas@rixo.cz,Cojabi964,No,Fitko,Lukáš
+Rodný Jakub,rodny.jakub@rixo.cz,bydyJ582,No,Rodný,Jakub
+Šedý Ludvík,sedy.ludvik@rixo.cz,Siwir396,No,Šedý,Ludvík
+Trémová Nikola,tremova.nikola@rixo.cz,Penox830,No,Trémová,Nikola
+Maskot Michal,maskot.michal@rixo.cz,sedyQu8415,No,Maskot,Michal
+Hujerová Anna,hujerova.anna@rixo.cz,Vypor023,No,Hujerová,Anna
+Králíková Michaela,kralikova.michaela@rixo.cz,baloG498,No,Králíková,Michaela
+Ofinová Karolína,ofinova.karolina@rixo.cz,byDufu8917,No,Ofinová,Karolína
