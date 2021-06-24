@@ -6,10 +6,13 @@ import sys
 import unicodedata
 import PySimpleGUI as sg
 import keyboard
+import os
 
 vowels = "aeiouy"
 
 consonants = "bcdfghjklmnpqrsvwxz"
+
+csvFolder = "createdCSVs/"
 
 def generagePassword():
     passwordLength = random.randint(8, 10)
@@ -67,19 +70,19 @@ class fileCreatorHandler(object):
         self.firstName_secondName = True;
         self.newUsers = self.readUsersFromFile()
         self.azureUserAddFileWanded = azureUserAddFileWanded
-        self.azureUserAddFileName = "Azure_Bulk_User_Create.csv"
+        self.azureUserAddFileName = csvFolder + "Azure_Bulk_User_Create.csv"
         self.azureGroupAddFileWanded = azureGroupAddFileWanded
-        self.azureGroupAddFileName = "Azure_Bulk_Group_Add.csv"
+        self.azureGroupAddFileName = csvFolder + "Azure_Bulk_Group_Add.csv"
         self.zeteoFileWanded = zeteoFileWanded
-        self.zeteoFileName = "Zeteo_User_Credentials.csv"
+        self.zeteoFileName = csvFolder + "Zeteo_User_Credentials.csv"
         self.ustrednaFileWanded = ustrednaFileWanded
-        self.ustrednaFileName = "Ustredna_User_Credentials.csv"
+        self.ustrednaFileName = csvFolder + "Ustredna_User_Credentials.csv"
         self.jaachymFileWanded = jaachymFileWanded
-        self.jaachymFileName = "Zeteo_For_Jaachym.csv"
+        self.jaachymFileName = csvFolder + "Zeteo_For_Jaachym.csv"
         self.nSureFileWanted = nSureFileWanted
-        self.nSureFileName = "nSure_User_Credentials.csv"
+        self.nSureFileName = csvFolder + "nSure_User_Credentials.csv"
         self.azureCredentialsWnted = azureCredentialsWnted
-        self.azureCredentialsFileName = "Azure_User_Credentials.csv"
+        self.azureCredentialsFileName = csvFolder + "Azure_User_Credentials.csv"
 
     def showWindow(self):
         layout = [  [sg.Text('This is simple python programme used for creating CSV files for azuze and sending emails')],
@@ -131,6 +134,10 @@ class fileCreatorHandler(object):
         return newUsers
 
     def createCSVFiles(self):
+        try:
+                os.mkdir(csvFolder)
+        except FileExistsError:
+                pass
         if self.azureUserAddFileWanded:
             self.createAzureUserAddFile()
         if self.azureGroupAddFileWanded:
