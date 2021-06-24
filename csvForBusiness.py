@@ -5,6 +5,7 @@ import random
 import sys
 import unicodedata
 import PySimpleGUI as sg
+import keyboard
 
 vowels = "aeiouy"
 
@@ -60,8 +61,10 @@ class user(object):
         return self.firstName + " " + self.secondName + " " + self.email 
 
 class fileCreatorHandler(object):
-    def __init__(self, inputFileName, lastZeteoID = -1, azureUserAddFileWanded = True, azureGroupAddFileWanded = True, zeteoFileWanded = True, ustrednaFileWanded = True, jaachymFileWanded = True):
+    def __init__(self, inputFileName, lastZeteoID = -1, azureUserAddFileWanded = True, azureGroupAddFileWanded = True, zeteoFileWanded = True, ustrednaFileWanded = True, jaachymFileWanded = True, nSureFileWanted = True, azureCredentialsWnted = True):
         self.inputFileName = inputFileName
+        self.lastZeteoID = lastZeteoID+1
+        self.firstName_secondName = True;
         self.newUsers = self.readUsersFromFile()
         self.azureUserAddFileWanded = azureUserAddFileWanded
         self.azureUserAddFileName = "Azure_Bulk_User_Create.csv"
@@ -73,6 +76,41 @@ class fileCreatorHandler(object):
         self.ustrednaFileName = "Ustredna_User_Credentials.csv"
         self.jaachymFileWanded = jaachymFileWanded
         self.jaachymFileName = "Zeteo_For_Jaachym.csv"
+        self.nSureFileWanted = nSureFileWanted
+        self.nSureFileName = "nSure_User_Credentials.csv"
+        self.azureCredentialsWnted = azureCredentialsWnted
+        self.azureCredentialsFileName = "Azure_User_Credentials.csv"
+
+    def showWindow(self):
+        layout = [  [sg.Text('This is simple python programme used for creating CSV files for azuze and sending emails')],
+             [sg.Text('Soubor se jmény', size=(15, 1), auto_size_text=False, justification='right'), sg.InputText('a.txt', key='-INPUT_FILE-'), sg.FileBrowse()],
+             [sg.Radio('Pořadí jmen ve zdroji "Jméno Příjmení"', "PORADI", default=True, key='-JMENO_PRIJMENI-'), sg.Radio('Pořadí jmen ve zdroji "Příjmení Jméno"', "PORADI", key='-PRIJMENI_JMENO-')],
+             [sg.T('Prosím zaškrtněte vše, co má program vykonat')],
+             [sg.Text(size=(5, 1), auto_size_text=False), sg.Checkbox('Vygenerovat Azure_Bulk_User_Create.csv', key='-AZURE_USER-')],
+             [sg.Text(size=(5, 1), auto_size_text=False), sg.Checkbox('Vygenerovat Azure_Bulk_Group_Add.csv', key='-AZURE_GROUP-')],
+             [sg.Text(size=(5, 1), auto_size_text=False), sg.Checkbox('Vygenerovat Zeteo_User_Credentials.csv', key='-ZETEO_USER-')],
+             [sg.Text(size=(5, 1), auto_size_text=False), sg.Checkbox('Vygenerovat Ustredna_User_Credentials.csv', key='-USTREDNA_USER-')],
+             [sg.Text(size=(5, 1), auto_size_text=False), sg.Checkbox('Vygenerovat Zeteo_For_Jaachym.csv', key='-JAACHYM-')],
+             [sg.Text(size=(5, 1), auto_size_text=False), sg.Checkbox('Rozeslat novým uživatelům maily', key='-MAIL-')],
+             [sg.Button('Show'), sg.Button('Exit')]
+         ]
+
+        window = sg.Window('Window Title', layout)
+
+        # event, values = window.read()
+        
+        # window.close()
+
+        # print(event)
+        # print(values)
+        while True:  # Event Loop
+            event, values = window.read()
+            if event == sg.WIN_CLOSED or event == 'Exit':
+                break
+            if event == 'Show':
+                print(values)
+
+        window.close()
 
     def readUsersFromFile(self):
         newUsers = []
@@ -85,9 +123,11 @@ class fileCreatorHandler(object):
                 if len(words) > 2:
                     for x in range(1,len(words)-1):
                         words[0] += " " + words[x]
-                firstName = words[0]
-                secondName = words[len(words)-1]
-                newUsers.append(user(firstName, secondName))
+                secondName = words[0]
+                firstName = words[len(words)-1]
+
+                newUsers.append(user(firstName, secondName, self.lastZeteoID))
+                self.lastZeteoID += 1
         return newUsers
 
     def createCSVFiles(self):
@@ -101,99 +141,184 @@ class fileCreatorHandler(object):
             self.createUstrednaCredentialsFile()
         if self.jaachymFileWanded:
             self.createJaachymFile()
+        if self.nSureFileWanted:
+            self.createnSureFile()
+        if self.azureCredentialsWnted:
+            self.createAzureCredentialsFile()
 
     def createAzureUserAddFile(self):
-        with open("Azure_Bulk_User_Create.csv", "w+", encoding="utf-8") as file:
-            file.write("version:v1.0\n")
-            file.write("Name [displayName] Required,User name [userPrincipalName] Required,Initial password [passwordProfile] Required,Block sign in (Yes/No) [accountEnabled] Required,First name [givenName],Last name [surname]\n")
-            for person in self.newUsers:
-                file.write( person.secondName + " " + 
-                            person.firstName + "," +
-                            person.email + "," +
-                            person.emailPass + "," + 
-                            "No," + 
-                            person.firstName + "," +
-                            person.secondName + "\n")
+        try:
+            with open(self.azureUserAddFileName, "r", encoding="utf-8") as file:
+                pass
+        except FileNotFoundError:
+            with open(self.azureUserAddFileName, "w+", encoding="utf-8") as file:
+                file.write("version:v1.0\n")
+                file.write("Name [displayName] Required,User name [userPrincipalName] Required,Initial password [passwordProfile] Required,Block sign in (Yes/No) [accountEnabled] Required,First name [givenName],Last name [surname]\n")
+                for person in self.newUsers:
+                    file.write( person.firstName + " " + 
+                                person.secondName + "," +
+                                person.email + "," +
+                                person.emailPass + "," + 
+                                "No," + 
+                                person.firstName + "," +
+                                person.secondName + "\n")
 
     def createAzureGroupAddFile(self):
-        with open(self.azureGroupAddFileName, "w+",  encoding="utf-8") as file:
-            file.write("version:v1.0\n")
-            file.write("Member object ID or user principal name [memberObjectIdOrUpn] Required\n")
-            for person in self.newUsers:
-                file.write(person.email + "\n")
+        try:
+            with open(self.azureGroupAddFileName, "r", encoding="utf-8") as file:
+                pass
+        except FileNotFoundError:
+            with open(self.azureGroupAddFileName, "w+",  encoding="utf-8") as file:
+                file.write("version:v1.0\n")
+                file.write("Member object ID or user principal name [memberObjectIdOrUpn] Required\n")
+                for person in self.newUsers:
+                    file.write(person.email + "\n")
 
     def createZeteoCredentialsFile(self):
-        with open(self.zeteoFileName, "w+",  encoding="utf-8") as file:
-            file.write("version:v1.0\n")
-            file.write("First name [givenName],Last name [surname],Zeteo universal email [zeteoEmailUniversal], Rixo telephone number [phoneNumber], Zeteo personal number [zeteoID], Zeteo role [zeteoRole], Zeteo user name [zeteoName] Required, Zeteo user password [zeteoPass] Required\n")
-            for person in self.newUsers:
-                file.write( person.firstName + "," +
-                            person.secondName + "," +
-                            "pojisteni@rixo.cz" + "," +
-                            "+420233089233" + "," + 
-                            str(person.zeteoID) + ","
-                            "Expert na pojištění" + "," +
-                            person.zeteoName + "," +
-                            person.zeteoPass + "\n")
+        try:
+            with open(self.zeteoFileName, "r", encoding="utf-8") as file:
+                pass
+        except FileNotFoundError:
+            with open(self.zeteoFileName, "w+",  encoding="utf-8") as file:
+                file.write("version:v1.0\n")
+                file.write("First name [givenName],Last name [surname],Zeteo universal email [zeteoEmailUniversal], Rixo telephone number [phoneNumber], Zeteo personal number [zeteoID], Zeteo role [zeteoRole], Zeteo user name [zeteoName] Required, Zeteo user password [zeteoPass] Required\n")
+                for person in self.newUsers:
+                    file.write( person.firstName + "," +
+                                person.secondName + "," +
+                                "pojisteni@rixo.cz" + "," +
+                                "+420233089233" + "," + 
+                                str(person.zeteoID) + ","
+                                "Expert na pojištění" + "," +
+                                person.zeteoName + "," +
+                                person.zeteoPass + "\n")
     
     def createUstrednaCredentialsFile(self):
-        with open(self.ustrednaFileName, "w+",  encoding="utf-8") as file:
-            file.write("version:v1.0\n")
-            file.write("First name [givenName],Last name [surname],Ustredna login name [ustrednaLogin], Ustredna password [ustrednaPass]\n")
-            for person in self.newUsers:
-                file.write( person.firstName + "," +
-                            person.secondName + "," + 
-                            person.ustrednaName + "," +
-                            person.ustrednaPass + "\n")
+        try:
+            with open(self.ustrednaFileName, "r", encoding="utf-8") as file:
+                pass
+        except FileNotFoundError:
+            with open(self.ustrednaFileName, "w+",  encoding="utf-8") as file:
+                file.write("version:v1.0\n")
+                file.write("First name [givenName],Last name [surname],Ustredna login name [ustrednaLogin], Ustredna password [ustrednaPass]\n")
+                for person in self.newUsers:
+                    file.write( person.firstName + "," +
+                                person.secondName + "," + 
+                                person.ustrednaName + "," +
+                                person.ustrednaPass + "\n")
 
     def createJaachymFile(self):
-        with open(self.jaachymFileName, "w+",  encoding="utf-8") as file:
-            file.write("version:v1.0\n")
-            file.write("Member email [userEmail] Required, Zeteo ID [zeteoID] Required\n")
-            for person in self.newUsers:
-                file.write( person.email + "," +
-                            str(person.zeteoID) + "\n")
+        try:
+            with open(self.jaachymFileName, "r", encoding="utf-8") as file:
+                pass
+        except FileNotFoundError:
+            with open(self.jaachymFileName, "w+",  encoding="utf-8") as file:
+                file.write("version:v1.0\n")
+                file.write("Member email [userEmail] Required, Zeteo ID [zeteoID] Required\n")
+                for person in self.newUsers:
+                    file.write( person.email + "," +
+                                str(person.zeteoID) + "\n")
 
-class window (object):
-    def __init__(self):
-        pass
+    def createnSureFile(self):
+        try:
+            with open(self.nSureFileName, "r", encoding="utf-8") as file:
+                pass
+        except FileNotFoundError:
+            with open(self.nSureFileName, "w+",  encoding="utf-8") as file:
+                file.write("version:v1.0\n")
+                file.write("First name [givenName],Last name [surname],Member email [userEmail] Required\n")
+                for person in self.newUsers:
+                    file.write( person.firstName + "," +
+                                person.secondName + "," +
+                                person.email + "\n")
 
-    def initWindow(self):
-       sg.Window(title="Hello World", layout=[[]]).read()
+    def createAzureCredentialsFile(self):
+        try:
+            with open(self.azureCredentialsFileName, "r", encoding="utf-8") as file:
+                pass
+        except FileNotFoundError:
+            with open(self.azureCredentialsFileName, "w+",  encoding="utf-8") as file:
+                file.write("version:v1.0\n")
+                file.write("First name [givenName],Last name [surname],Member email [userEmail] Required, Email password [emailPass]\n")
+                for person in self.newUsers:
+                    file.write( person.firstName + "," +
+                                person.secondName + "," +
+                                person.email + "," +
+                                person.emailPass + "\n")
+
+def blobcrement(number):
+    if number < 20:
+        number += 1
+    print(number)
+
+class printer (object):
+    def __init__(self, users):
+        self.users = users
+        self.number = 4
+
+    def incrementNumber(self):
+        if self.number < len(self.users):
+            self.number += 1
+        print(self.number)
+
+    def decrementNumber(self):
+        if self.number > 0:
+            self.number -= 1
+        print(self.number)
+
+    def printName(self):
+        print(self.users[self.number].firstName)
+
+    def printSurname(self):
+        print(self.users[self.number].secondName)
 
 if __name__ == '__main__':
-    users = fileCreatorHandler("a.txt")
+    users = fileCreatorHandler("a.txt", 213)
 
-    users.createCSVFiles();
+    users.createCSVFiles()
+
+    # for user in users.newUsers:
+    #     print(user)
+
+    # print(len(users.newUsers))
     
-    #sg.theme('DarkAmber')   # Add a little color to your windows
-    layout = [  [sg.Text('This is simple python programme used for creating CSV files for azuze and sending emails')],
-                 [sg.Text('Your Folder', size=(15, 1), auto_size_text=False, justification='right'), sg.InputText('Default Folder', key='-INPUT_FILE-'), sg.FolderBrowse()],
-                 [sg.Radio('Pořadí jmen ve zdroji "Jméno Příjmení"', "PORADI", default=True), sg.Radio('Pořadí jmen ve zdroji "Příjmení Jméno"', "PORADI")],
-                 [sg.T('Prosím zaškrtněte vše, co má program vykonat')],
-                 [sg.Text(size=(5, 1), auto_size_text=False), sg.Checkbox('Vygenerovat Azure_Bulk_User_Create.csv')],
-                 [sg.Text(size=(5, 1), auto_size_text=False), sg.Checkbox('Vygenerovat Azure_Bulk_Group_Add.csv')],
-                 [sg.Text(size=(5, 1), auto_size_text=False), sg.Checkbox('Vygenerovat Zeteo_User_Credentials.csv')],
-                 [sg.Text(size=(5, 1), auto_size_text=False), sg.Checkbox('Vygenerovat Ustredna_User_Credentials.csv')],
-                 [sg.Text(size=(5, 1), auto_size_text=False), sg.Checkbox('Vygenerovat Zeteo_For_Jaachym.csv')],
-                 [sg.Text(size=(5, 1), auto_size_text=False), sg.Checkbox('Rozeslat novým uživatelům maily')],
-                 [sg.Button('Show'), sg.Button('Exit')]
-             ]
+    # i = 0
+    # while True:
+    #     while keyboard.is_pressed('ctrl'):
+    #         if keyboard.is_pressed('p') and i < len(users.newUsers)-1:
+    #             i += 1
+    #             while keyboard.is_pressed('p'):
+    #                 pass
+    #         if keyboard.is_pressed('l') and i > 0:
+    #             i -= 1
+    #             print(i)
+    #             while keyboard.is_pressed('l'):
+    #                 pass
+    #         if keyboard.is_pressed('m'):
+    #             keyboard.write(users.newUsers[i].firstName)
+    #             while keyboard.is_pressed('m'):
+    #                 pass
+    #         if keyboard.is_pressed(','):
+    #             keyboard.write(users.newUsers[i].secondName)
+    #             while keyboard.is_pressed(','):
+    #                 pass
+    #         if keyboard.is_pressed('.'):
+    #             keyboard.write(users.newUsers[i].email)
+    #             while keyboard.is_pressed('.'):
+    #                 pass
+    #         if keyboard.is_pressed('h'):
+    #             keyboard.write(str(users.newUsers[i].zeteoID))
+    #             while keyboard.is_pressed('h'):
+    #                 pass
+    #         if keyboard.is_pressed('j'):
+    #             keyboard.write(users.newUsers[i].zeteoName)
+    #             while keyboard.is_pressed('j'):
+    #                 pass
+    #         if keyboard.is_pressed('k'):
+    #             keyboard.write(users.newUsers[i].ustrednaPass)
+    #             while keyboard.is_pressed('k'):
+    #                 pass
+    #     if keyboard.is_pressed('g'):
+    #         break
+    
 
-    window = sg.Window('Window Title', layout)
 
-    # event, values = window.read()
-    # window.close()
-
-    # print(event)
-    # print(values)
-    while True:  # Event Loop
-        event, values = window.read()
-        if event == sg.WIN_CLOSED or event == 'Exit':
-            break
-        if event == 'Show':
-        # Update the "output" text element to be the value of "input" element
-            window['-OUTPUT-'].update(values['-INPUT_FILE-'])
-
-
-    window.close()
