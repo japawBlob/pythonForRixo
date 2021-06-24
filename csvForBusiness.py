@@ -163,8 +163,10 @@ class fileCreatorHandler(object):
             self.createnSureFile()
         if self.azureCredentialsWanted:
             self.createAzureCredentialsFile()
-        #if self.salesforceCredentialsFileWanted:
-            #self.createSalesforceFiles()
+        if self.salesforceCredentialsFileWanted:
+            self.createSalesforceFiles()
+        if self.salesforcePerformanceGroupWanted:
+            self.createPerformanceGroupFiles()
 
     def createAzureUserAddFile(self):
         try:
@@ -259,6 +261,26 @@ class fileCreatorHandler(object):
                                 person.secondName + "," +
                                 person.email + "," +
                                 person.emailPass + "\n")
+
+    def createSalesforceFiles(self):
+        pass
+        try:
+            with open(self.salesforceCredentialsFileName, "r", encoding="utf-8") as file:
+                pass
+        except FileNotFoundError:
+            with open(self.salesforceCredentialsFileName, "w+", encoding="utf-8") as file:
+                file.write("FirstName,MiddleName,SecondName,Alis,UserName,Email,Phone,USERPERMISSIONSSUPPORTUSER,InsoftUserC,ProfileID,TimeZoneSidKey,LocaleSidKey,EmailEncodingKey,LanguageLocaleKey\n")
+                for person in self.newUsers:
+                    file.write( person.firstName + person.middleName + " " + 
+                                person.secondName + "," +
+                                person.email + "," +
+                                person.emailPass + "," + 
+                                "No," + 
+                                person.firstName + "," +
+                                person.secondName + "\n")
+
+    def createPerformanceGroupFiles(self):
+        pass
 
 def blobcrement(number):
     if number < 20:
