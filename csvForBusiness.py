@@ -263,7 +263,6 @@ class fileCreatorHandler(object):
                                 person.emailPass + "\n")
 
     def createSalesforceFiles(self):
-        pass
         try:
             with open(self.salesforceCredentialsFileName, "r", encoding="utf-8") as file:
                 pass
@@ -271,13 +270,28 @@ class fileCreatorHandler(object):
             with open(self.salesforceCredentialsFileName, "w+", encoding="utf-8") as file:
                 file.write("FirstName,MiddleName,SecondName,Alis,UserName,Email,Phone,USERPERMISSIONSSUPPORTUSER,InsoftUserC,ProfileID,TimeZoneSidKey,LocaleSidKey,EmailEncodingKey,LanguageLocaleKey\n")
                 for person in self.newUsers:
-                    file.write( person.firstName + person.middleName + " " + 
+                    alias = person.firstName[0] + person.secondName[0:min(4,len(person.secondName))]
+                    file.write( person.firstName + "," +
+                                person.middleName + "," + 
                                 person.secondName + "," +
+                                alias + "," +
                                 person.email + "," +
-                                person.emailPass + "," + 
-                                "No," + 
-                                person.firstName + "," +
-                                person.secondName + "\n")
+                                person.email + "," +
+                                "+420 233 089 233" + "," +
+                                "true" + "," +
+                                "true" + "," + 
+                                "00e2o0000013J6tAAE" + "," +
+                                "Europe/Prague" + "," +
+                                "cs_CZ" + "," +
+                                "UTF-8" + "," +
+                                "cs" + "\n"
+                            )
+    
+    def createPublicGroupFiles(self):
+        pass
+
+    def createPermisionSetGroupFiles(self):
+        pass
 
     def createPerformanceGroupFiles(self):
         pass
