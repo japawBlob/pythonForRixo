@@ -12,7 +12,7 @@ vowels = "aeiouy"
 
 consonants = "bcdfghjklmnpqrsvwxz"
 
-csvFolder = "createdCSVs/"
+csvFolder = "mockupCSVs/"
 
 def generagePassword():
     passwordLength = random.randint(8, 10)

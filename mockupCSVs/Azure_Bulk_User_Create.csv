@@ -1,23 +1,24 @@
 version:v1.0
 Name [displayName] Required,User name [userPrincipalName] Required,Initial password [passwordProfile] Required,Block sign in (Yes/No) [accountEnabled] Required,First name [givenName],Last name [surname]
-Hands Pepe,hands.pepe@rixo.cz,zuCebe6272,No,Hands,Pepe
-Černý Josef,cerny.josef@rixo.cz,givaW125,No,Černý,Josef
-Říha Gustav,riha.gustav@rixo.cz,navinO4593,No,Říha,Gustav
-Roubíček Tomáš,roubicek.tomas@rixo.cz,cUsys117,No,Roubíček,Tomáš
-Koťě Jiří,kote.jiri@rixo.cz,baRude053,No,Koťě,Jiří
-Rotný Matyáš,rotny.matyas@rixo.cz,wiwuJi0343,No,Rotný,Matyáš
-Dědková Barbora,dedkova.barbora@rixo.cz,suNic792,No,Dědková,Barbora
-Milá Anna,mila.anna@rixo.cz,Viqili7448,No,Milá,Anna
-Hravý Petr,hravy.petr@rixo.cz,dAloc377,No,Hravý,Petr
-Usměvavá Irena,usmevava.irena@rixo.cz,mucIbo840,No,Usměvavá,Irena
-Pečlivá Kateřina,pecliva.katerina@rixo.cz,niGym222,No,Pečlivá,Kateřina
-Strouhal Michal,strouhal.michal@rixo.cz,voBow887,No,Strouhal,Michal
-Kreslíř Jan,kreslir.jan@rixo.cz,xUfobe710,No,Kreslíř,Jan
-Fitko Lukáš,fitko.lukas@rixo.cz,Cojabi964,No,Fitko,Lukáš
-Rodný Jakub,rodny.jakub@rixo.cz,bydyJ582,No,Rodný,Jakub
-Šedý Ludvík,sedy.ludvik@rixo.cz,Siwir396,No,Šedý,Ludvík
-Trémová Nikola,tremova.nikola@rixo.cz,Penox830,No,Trémová,Nikola
-Maskot Michal,maskot.michal@rixo.cz,sedyQu8415,No,Maskot,Michal
-Hujerová Anna,hujerova.anna@rixo.cz,Vypor023,No,Hujerová,Anna
-Králíková Michaela,kralikova.michaela@rixo.cz,baloG498,No,Králíková,Michaela
-Ofinová Karolína,ofinova.karolina@rixo.cz,byDufu8917,No,Ofinová,Karolína
+Pepe Hands,pepe.hands@rixo.cz,jenyMu567,No,Pepe,Hands
+Josef Černý,josef.cerny@rixo.cz,qaFyli315,No,Josef,Černý
+Gustav Říha,gustav.riha@rixo.cz,sipAko925,No,Gustav,Říha
+Tomáš Roubíček,tomas.roubicek@rixo.cz,siZymy9029,No,Tomáš,Roubíček
+Jiří Koťě,jiri.kote@rixo.cz,cydoJe2565,No,Jiří,Koťě
+Matyáš Rotný,matyas.rotny@rixo.cz,lapoRu554,No,Matyáš,Rotný
+Barbora Dědková,barbora.dedkova@rixo.cz,lunuB051,No,Barbora,Dědková
+Anna Milá,anna.mila@rixo.cz,jySuxi0440,No,Anna,Milá
+Petr Hravý,petr.hravy@rixo.cz,Jaxopy003,No,Petr,Hravý
+Irena Usměvavá,irena.usmevava@rixo.cz,qAkoze3620,No,Irena,Usměvavá
+Kateřina Pečlivá,katerina.pecliva@rixo.cz,leMojo1464,No,Kateřina,Pečlivá
+Michal Strouhal,michal.strouhal@rixo.cz,rIcovi349,No,Michal,Strouhal
+Jan Kreslíř,jan.kreslir@rixo.cz,jalUbu3656,No,Jan,Kreslíř
+Lukáš Fitko,lukas.fitko@rixo.cz,vojeL226,No,Lukáš,Fitko
+Jakub Rodný,jakub.rodny@rixo.cz,nemanE632,No,Jakub,Rodný
+Ludvík Šedý,ludvik.sedy@rixo.cz,heRiz177,No,Ludvík,Šedý
+Nikola Trémová,nikola.tremova@rixo.cz,koPene8097,No,Nikola,Trémová
+Michal Maskot,michal.maskot@rixo.cz,Gowuk911,No,Michal,Maskot
+Anna Hujerová,anna.hujerova@rixo.cz,jaseR909,No,Anna,Hujerová
+Michaela Králíková,michaela.kralikova@rixo.cz,Ropama2943,No,Michaela,Králíková
+Karolína Ofinová,karolina.ofinova@rixo.cz,rifUv230,No,Karolína,Ofinová
+Jan Maria Sarkander,jan.sarkander@rixo.cz,Qeqan437,No,Jan,Sarkander
