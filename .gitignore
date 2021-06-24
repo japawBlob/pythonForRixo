@@ -1,13 +1,2 @@
-Azure_Bulk_Group_Add.csv
 a.txt
-Azure_Bulk_User_Create.csv
-Azure_User_Credentials.csv
-nSure_User_Credentials.csv
-testImportUser.csv
-Ustredna_User_Credentials.csv
-Zeteo_For_Jaachym.csv
-Zeteo_User_Credentials.csv
-workspace.code-workspace
-log_results.txt
-blob.py
-__pycache__/
+createdCSVs/
