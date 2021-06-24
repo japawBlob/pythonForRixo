@@ -10,3 +10,4 @@ Zeteo_User_Credentials.csv
 workspace.code-workspace
 log_results.txt
 blob.py
+__pycache__/
