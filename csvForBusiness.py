@@ -16,7 +16,7 @@ csvFolder = "createdCSVs/"
 
 def generagePassword():
     passwordLength = random.randint(8, 10)
-    x = 0;
+    x = 0
 
     password = ""
 
@@ -37,8 +37,9 @@ def generagePassword():
 
 
 class user(object):
-    def __init__(self, firstName, secondName, zeteoID = -1):
+    def __init__(self, firstName, middleName, secondName, zeteoID = -1):
         self.firstName = firstName
+        self.middleName = middleName
         self.secondName = secondName
         self.email = self.createEmail()
         self.emailPass = generagePassword()
@@ -61,13 +62,13 @@ class user(object):
         return zeteoName
 
     def __str__(self):
-        return self.firstName + " " + self.secondName + " " + self.email 
+        return self.firstName + self.middleName + " " + self.secondName + " " + self.email 
 
 class fileCreatorHandler(object):
-    def __init__(self, inputFileName, lastZeteoID = -1, azureUserAddFileWanded = True, azureGroupAddFileWanded = True, zeteoFileWanded = True, ustrednaFileWanded = True, jaachymFileWanded = True, nSureFileWanted = True, azureCredentialsWnted = True):
+    def __init__(self, inputFileName, lastZeteoID = -1, firstName_SecondName = True, azureUserAddFileWanded = True, azureGroupAddFileWanded = True, zeteoFileWanded = True, ustrednaFileWanded = True, jaachymFileWanded = True, nSureFileWanted = True, azureCredentialsWanted = True, salesforceCredentialsFileWanted = True, salesforcePerformanceGroupFileWanted = True):
         self.inputFileName = inputFileName
         self.lastZeteoID = lastZeteoID+1
-        self.firstName_secondName = True;
+        self.firstName_secondName = firstName_SecondName
         self.newUsers = self.readUsersFromFile()
         self.azureUserAddFileWanded = azureUserAddFileWanded
         self.azureUserAddFileName = csvFolder + "Azure_Bulk_User_Create.csv"
@@ -81,8 +82,12 @@ class fileCreatorHandler(object):
         self.jaachymFileName = csvFolder + "Zeteo_For_Jaachym.csv"
         self.nSureFileWanted = nSureFileWanted
         self.nSureFileName = csvFolder + "nSure_User_Credentials.csv"
-        self.azureCredentialsWnted = azureCredentialsWnted
+        self.azureCredentialsWanted = azureCredentialsWanted
         self.azureCredentialsFileName = csvFolder + "Azure_User_Credentials.csv"
+        self.salesforceCredentialsFileWanted = salesforceCredentialsFileWanted
+        self.salesforceCredentialsFileName = csvFolder + "Salesforce_Credentials.csv"
+        self.salesforcePerformanceGroupWanted = salesforcePerformanceGroupFileWanted
+        self.salesforcePerformanceGroupFileName = csvFolder + "Salesforce_Performance_Group_members.csv"
 
     def showWindow(self):
         layout = [  [sg.Text('This is simple python programme used for creating CSV files for azuze and sending emails')],
@@ -118,6 +123,7 @@ class fileCreatorHandler(object):
     def readUsersFromFile(self):
         newUsers = []
         with open(self.inputFileName, "r",  encoding="utf-8") as inputFile:
+            middleName = ""
             for line in inputFile:
                 words = line.split()
                 words = list(filter(None, words))
@@ -125,11 +131,16 @@ class fileCreatorHandler(object):
                     continue
                 if len(words) > 2:
                     for x in range(1,len(words)-1):
-                        words[0] += " " + words[x]
-                secondName = words[0]
-                firstName = words[len(words)-1]
+                        middleName += " " + words[x]
 
-                newUsers.append(user(firstName, secondName, self.lastZeteoID))
+                if self.firstName_secondName:
+                    firstName = words[0]
+                    secondName = words[len(words)-1]
+                else:
+                    secondName = words[0]
+                    firstName = words[len(words)-1]
+
+                newUsers.append(user(firstName, middleName, secondName, self.lastZeteoID))
                 self.lastZeteoID += 1
         return newUsers
 
@@ -150,8 +161,10 @@ class fileCreatorHandler(object):
             self.createJaachymFile()
         if self.nSureFileWanted:
             self.createnSureFile()
-        if self.azureCredentialsWnted:
+        if self.azureCredentialsWanted:
             self.createAzureCredentialsFile()
+        #if self.salesforceCredentialsFileWanted:
+            #self.createSalesforceFiles()
 
     def createAzureUserAddFile(self):
         try:
@@ -162,7 +175,7 @@ class fileCreatorHandler(object):
                 file.write("version:v1.0\n")
                 file.write("Name [displayName] Required,User name [userPrincipalName] Required,Initial password [passwordProfile] Required,Block sign in (Yes/No) [accountEnabled] Required,First name [givenName],Last name [surname]\n")
                 for person in self.newUsers:
-                    file.write( person.firstName + " " + 
+                    file.write( person.firstName + person.middleName + " " + 
                                 person.secondName + "," +
                                 person.email + "," +
                                 person.emailPass + "," + 
@@ -187,7 +200,6 @@ class fileCreatorHandler(object):
                 pass
         except FileNotFoundError:
             with open(self.zeteoFileName, "w+",  encoding="utf-8") as file:
-                file.write("version:v1.0\n")
                 file.write("First name [givenName],Last name [surname],Zeteo universal email [zeteoEmailUniversal], Rixo telephone number [phoneNumber], Zeteo personal number [zeteoID], Zeteo role [zeteoRole], Zeteo user name [zeteoName] Required, Zeteo user password [zeteoPass] Required\n")
                 for person in self.newUsers:
                     file.write( person.firstName + "," +
@@ -205,7 +217,6 @@ class fileCreatorHandler(object):
                 pass
         except FileNotFoundError:
             with open(self.ustrednaFileName, "w+",  encoding="utf-8") as file:
-                file.write("version:v1.0\n")
                 file.write("First name [givenName],Last name [surname],Ustredna login name [ustrednaLogin], Ustredna password [ustrednaPass]\n")
                 for person in self.newUsers:
                     file.write( person.firstName + "," +
@@ -219,7 +230,6 @@ class fileCreatorHandler(object):
                 pass
         except FileNotFoundError:
             with open(self.jaachymFileName, "w+",  encoding="utf-8") as file:
-                file.write("version:v1.0\n")
                 file.write("Member email [userEmail] Required, Zeteo ID [zeteoID] Required\n")
                 for person in self.newUsers:
                     file.write( person.email + "," +
@@ -231,7 +241,6 @@ class fileCreatorHandler(object):
                 pass
         except FileNotFoundError:
             with open(self.nSureFileName, "w+",  encoding="utf-8") as file:
-                file.write("version:v1.0\n")
                 file.write("First name [givenName],Last name [surname],Member email [userEmail] Required\n")
                 for person in self.newUsers:
                     file.write( person.firstName + "," +
@@ -244,10 +253,9 @@ class fileCreatorHandler(object):
                 pass
         except FileNotFoundError:
             with open(self.azureCredentialsFileName, "w+",  encoding="utf-8") as file:
-                file.write("version:v1.0\n")
-                file.write("First name [givenName],Last name [surname],Member email [userEmail] Required, Email password [emailPass]\n")
+                file.write("Name [displayName] Required,Member email [userEmail] Required, Email password [emailPass]\n")
                 for person in self.newUsers:
-                    file.write( person.firstName + "," +
+                    file.write( person.firstName + person.middleName + " " +
                                 person.secondName + "," +
                                 person.email + "," +
                                 person.emailPass + "\n")
@@ -283,8 +291,8 @@ if __name__ == '__main__':
 
     users.createCSVFiles()
 
-    # for user in users.newUsers:
-    #     print(user)
+    for user in users.newUsers:
+        print(user)
 
     # print(len(users.newUsers))
     
