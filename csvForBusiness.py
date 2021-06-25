@@ -7,6 +7,18 @@ import unicodedata
 import PySimpleGUI as sg
 import keyboard
 import os
+#What is 0PS2o000000R5DJGA0
+#WTF is this group? X00e2o0000013J6tAAE
+#ProfileID "00e2o0000013J6tAAE"
+#CTI_Permission_Group 
+#  PermissionSetID:         "0PS2o000000HzULGA0"
+#  PermissionsetgroupID:    "0PG2o000000GmhtGAC"
+#Performance "0PS2o000000HytTGAS"
+#  PermissionSetID:         "0PS2o000000HytTGAS"
+#  PermissionsetgroupID:    ""
+#PerformanceGroupC "a0e2o0000106E0rAAE"
+#Nezrusene_ucty "00G2o000009BH9AEAW"
+#Broker "00G2o000009c00qEAA"
 
 vowels = "aeiouy"
 
@@ -50,8 +62,8 @@ class user(object):
         self.ustrednaPass = generagePassword()
 
     def createEmail(self):
-        firstName = unidecode.unidecode(self.firstName).lower();
-        secondName = unidecode.unidecode(self.secondName).lower();
+        firstName = unidecode.unidecode(self.firstName).lower()
+        secondName = unidecode.unidecode(self.secondName).lower()
         email = firstName+"."+secondName+"@rixo.cz"
         return email
 
@@ -288,12 +300,16 @@ class fileCreatorHandler(object):
                             )
     
     def createPublicGroupFiles(self):
+        #USER ID + GROUP ID needed
         pass
 
     def createPermisionSetGroupFiles(self):
+        #AssigneeID + ExpirationDate + PermissionSetGrouIP + PermissionSetID
+        #exp date empty string
         pass
 
     def createPerformanceGroupFiles(self):
+        #Assigned_Cases + User_C + Performance group ID
         pass
 
 def blobcrement(number):
